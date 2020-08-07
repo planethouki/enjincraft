@@ -36,3 +36,7 @@ fun DependencyHandler.runtimeOnly(dependency: MavenDependency): Dependency? {
 fun DependencyHandler.shadow(dependency: MavenDependency): Dependency? {
     return add("shadow", dependency.toString())
 }
+
+fun DependencyHandler.annotationProcessor(dependency: MavenDependency): Dependency? {
+    return add("annotationProcessor", dependency.toString())
+}

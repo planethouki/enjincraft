@@ -1,6 +1,7 @@
 import com.bmuschko.gradle.nexus.ExtraArchivePluginExtension
 import com.bmuschko.gradle.nexus.NexusPluginExtension
 import io.codearte.gradle.nexus.NexusStagingExtension
+import io.freefair.gradle.plugins.lombok.tasks.Delombok
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -11,8 +12,9 @@ buildscript {
 }
 
 plugins {
+    `java`
     `java-library`
-    kotlin("jvm")
+//    kotlin("jvm")
     id(BuildPlugins.lombok, false)
     id(BuildPlugins.shadow, false)
     id(BuildPlugins.nexus, false)
@@ -33,7 +35,9 @@ allprojects {
 
 subprojects {
     apply {
-        plugin("kotlin")
+        plugin("java")
+        plugin("java-library")
+//        plugin("kotlin")
         plugin(BuildPlugins.lombok)
         plugin(BuildPlugins.shadow)
         plugin(BuildPlugins.nexus)
@@ -48,16 +52,23 @@ subprojects {
         mavenCentral()
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            setJvmTarget(JavaVersion.VERSION_1_8)
-        }
-    }
+//    tasks.withType<KotlinCompile> {
+//        kotlinOptions {
+//            setJvmTarget(JavaVersion.VERSION_1_8)
+//        }
+//    }
 
     tasks.withType<JavaCompile> {
         setSourceCompatibility(JavaVersion.VERSION_1_8)
         setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
+
+
+    // Adds kotlin classes to delombok classpath
+//    tasks.named<Delombok>("delombok") {
+//        val compileKotlin by tasks.getting(KotlinCompile::class)
+//        classpath.from(compileKotlin.destinationDir)
+//    }
 
     task<Jar>("javadocJar") {
         dependsOn("javadoc")
